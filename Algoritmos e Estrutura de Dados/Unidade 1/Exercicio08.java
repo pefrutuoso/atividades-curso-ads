@@ -1,45 +1,38 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 // Exercício 8: Análise de Frequência de Pedidos no Delivery
-public class Exercicio08 {
+public class Exercicio8 {
     public static void main(String[] args) {
-        Scanner entrada = new Scanner(System.in);
-        ArrayList<Integer> pedidos = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
 
-        System.out.print("Quantos pedidos deseja informar? ");
-        int quantidade = entrada.nextInt();
+        System.out.print("Quantos pedidos serão informados? ");
+        int n = sc.nextInt();
 
-        if (quantidade <= 0) {
-            System.out.println("Informe pelo menos um pedido.");
-        } else {
-            for (int i = 0; i < quantidade; i++) {
-                System.out.print("Codigo do pedido " + (i + 1) + ": ");
-                pedidos.add(entrada.nextInt());
-            }
+        int[] pedidos = new int[n];
 
-            int maisPedido = pedidos.get(0);
-            int maiorFrequencia = 0;
-
-            for (int i = 0; i < pedidos.size(); i++) {
-                int codigoAtual = pedidos.get(i);
-                int frequencia = 0;
-
-                for (int j = 0; j < pedidos.size(); j++) {
-                    if (pedidos.get(j) == codigoAtual) {
-                        frequencia++;
-                    }
-                }
-
-                if (frequencia > maiorFrequencia) {
-                    maiorFrequencia = frequencia;
-                    maisPedido = codigoAtual;
-                }
-            }
-
-            System.out.println("Item mais pedido: " + maisPedido);
-            System.out.println("Quantidade de vezes: " + maiorFrequencia);
+        for (int i = 0; i < n; i++) {
+            System.out.print("Digite o código do pedido " + (i + 1) + ": ");
+            pedidos[i] = sc.nextInt();
         }
 
-        entrada.close();
+        int maisFrequente = pedidos[0];
+        int maiorContagem = 0;
+
+        for (int i = 0; i < n; i++) {
+            int contagem = 0;
+            for (int j = 0; j < n; j++) {
+                if (pedidos[i] == pedidos[j]) {
+                    contagem++;
+                }
+            }
+            if (contagem > maiorContagem) {
+                maiorContagem = contagem;
+                maisFrequente = pedidos[i];
+            }
+        }
+
+        System.out.println("\nItem mais pedido: " + maisFrequente);
+        System.out.println("Quantidade de vezes: " + maiorContagem);
+
+        sc.close();
     }
 }
