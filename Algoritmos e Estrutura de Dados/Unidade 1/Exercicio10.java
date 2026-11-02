@@ -1,164 +1,153 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 // Exercício 10: Desafio Final - Sistema de Gerenciamento de Estoque para uma Loja
 class Produto {
-    int codigo;
-    String nome;
-    int quantidade;
-    double preco;
+    private int codigo;
+    private String nome;
+    private double preco;
+    private int quantidade;
 
-    Produto(int codigo, String nome, int quantidade, double preco) {
+    public Produto(int codigo, String nome, double preco, int quantidade) {
         this.codigo = codigo;
         this.nome = nome;
-        this.quantidade = quantidade;
         this.preco = preco;
+        this.quantidade = quantidade;
+    }
+
+    public int getCodigo() { return codigo; }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
+    public double getPreco() { return preco; }
+    public void setPreco(double preco) { this.preco = preco; }
+    public int getQuantidade() { return quantidade; }
+    public void setQuantidade(int quantidade) { this.quantidade = quantidade; }
+
+    @Override
+    public String toString() {
+        return String.format("Cód: %d | Nome: %s | Preço: R$ %.2f | Qtd: %d",
+                codigo, nome, preco, quantidade);
     }
 }
 
 public class Exercicio10 {
-    public static void main(String[] args) {
-        Scanner entrada = new Scanner(System.in);
-        ArrayList<Produto> estoque = new ArrayList<>();
+    private static Produto[] estoque = new Produto[100];
+    private static int total = 0;
 
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         int opcao;
 
         do {
-            System.out.println("\n=== Gerenciamento de estoque ===");
+            System.out.println("\n=== Gerenciamento de Estoque ===");
             System.out.println("1 - Adicionar produto");
-            System.out.println("2 - Listar produtos");
+            System.out.println("2 - Remover produto");
             System.out.println("3 - Atualizar produto");
-            System.out.println("4 - Remover produto");
+            System.out.println("4 - Listar produtos");
             System.out.println("0 - Sair");
-            System.out.print("Escolha: ");
+            System.out.print("Opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-            opcao = entrada.nextInt();
-            entrada.nextLine();
-
-            if (opcao == 1) {
-                System.out.print("Codigo: ");
-                int codigo = entrada.nextInt();
-                entrada.nextLine();
-
-                boolean codigoExiste = false;
-
-                for (int i = 0; i < estoque.size(); i++) {
-                    if (estoque.get(i).codigo == codigo) {
-                        codigoExiste = true;
-                        break;
-                    }
-                }
-
-                if (codigoExiste) {
-                    System.out.println("Ja existe um produto com esse codigo.");
-                } else {
-                    System.out.print("Nome: ");
-                    String nome = entrada.nextLine();
-
-                    System.out.print("Quantidade: ");
-                    int quantidade = entrada.nextInt();
-                    entrada.nextLine();
-
-                    System.out.print("Preco (use ponto, exemplo 15.90): ");
-                    double preco = Double.parseDouble(entrada.nextLine());
-
-                    if (quantidade < 0 || preco < 0) {
-                        System.out.println(
-                            "Quantidade e preco nao podem ser negativos."
-                        );
-                    } else {
-                        Produto produto = new Produto(
-                            codigo, nome, quantidade, preco
-                        );
-
-                        estoque.add(produto);
-                        System.out.println("Produto cadastrado.");
-                    }
-                }
-
-            } else if (opcao == 2) {
-                if (estoque.isEmpty()) {
-                    System.out.println("O estoque esta vazio.");
-                } else {
-                    for (int i = 0; i < estoque.size(); i++) {
-                        Produto produto = estoque.get(i);
-
-                        System.out.println("\nCodigo: " + produto.codigo);
-                        System.out.println("Nome: " + produto.nome);
-                        System.out.println("Quantidade: " + produto.quantidade);
-                        System.out.println("Preco: R$ " + produto.preco);
-                    }
-                }
-
-            } else if (opcao == 3) {
-                System.out.print("Codigo do produto para atualizar: ");
-                int codigo = entrada.nextInt();
-                entrada.nextLine();
-
-                int posicao = -1;
-
-                for (int i = 0; i < estoque.size(); i++) {
-                    if (estoque.get(i).codigo == codigo) {
-                        posicao = i;
-                        break;
-                    }
-                }
-
-                if (posicao == -1) {
-                    System.out.println("Produto nao encontrado.");
-                } else {
-                    System.out.print("Novo nome: ");
-                    String nome = entrada.nextLine();
-
-                    System.out.print("Nova quantidade: ");
-                    int quantidade = entrada.nextInt();
-                    entrada.nextLine();
-
-                    System.out.print("Novo preco (use ponto): ");
-                    double preco = Double.parseDouble(entrada.nextLine());
-
-                    if (quantidade < 0 || preco < 0) {
-                        System.out.println(
-                            "Quantidade e preco nao podem ser negativos."
-                        );
-                    } else {
-                        Produto produto = estoque.get(posicao);
-
-                        produto.nome = nome;
-                        produto.quantidade = quantidade;
-                        produto.preco = preco;
-
-                        System.out.println("Produto atualizado.");
-                    }
-                }
-
-            } else if (opcao == 4) {
-                System.out.print("Codigo do produto para remover: ");
-                int codigo = entrada.nextInt();
-                entrada.nextLine();
-
-                int posicao = -1;
-
-                for (int i = 0; i < estoque.size(); i++) {
-                    if (estoque.get(i).codigo == codigo) {
-                        posicao = i;
-                        break;
-                    }
-                }
-
-                if (posicao == -1) {
-                    System.out.println("Produto nao encontrado.");
-                } else {
-                    estoque.remove(posicao);
-                    System.out.println("Produto removido.");
-                }
-
-            } else if (opcao != 0) {
-                System.out.println("Opcao invalida.");
+            switch (opcao) {
+                case 1: adicionar(sc); break;
+                case 2: remover(sc); break;
+                case 3: atualizar(sc); break;
+                case 4: listar(); break;
+                case 0: System.out.println("Encerrando sistema..."); break;
+                default: System.out.println("Opção inválida!");
             }
-
         } while (opcao != 0);
 
-        System.out.println("Sistema encerrado.");
-        entrada.close();
+        sc.close();
+    }
+
+    private static void adicionar(Scanner sc) {
+        if (total >= estoque.length) {
+            System.out.println("Estoque cheio!");
+            return;
+        }
+        System.out.print("Código: ");
+        int codigo = sc.nextInt();
+        sc.nextLine();
+
+        if (buscarIndice(codigo) != -1) {
+            System.out.println("Já existe um produto com esse código!");
+            return;
+        }
+
+        System.out.print("Nome: ");
+        String nome = sc.nextLine();
+        System.out.print("Preço: ");
+        double preco = sc.nextDouble();
+        System.out.print("Quantidade: ");
+        int qtd = sc.nextInt();
+
+        estoque[total] = new Produto(codigo, nome, preco, qtd);
+        total++;
+        System.out.println("Produto adicionado!");
+    }
+
+    private static void remover(Scanner sc) {
+        System.out.print("Código do produto a remover: ");
+        int codigo = sc.nextInt();
+        int indice = buscarIndice(codigo);
+
+        if (indice == -1) {
+            System.out.println("Produto não encontrado.");
+            return;
+        }
+
+        for (int i = indice; i < total - 1; i++) {
+            estoque[i] = estoque[i + 1];
+        }
+        estoque[total - 1] = null;
+        total--;
+        System.out.println("Produto removido!");
+    }
+
+    private static void atualizar(Scanner sc) {
+        System.out.print("Código do produto a atualizar: ");
+        int codigo = sc.nextInt();
+        sc.nextLine();
+        int indice = buscarIndice(codigo);
+
+        if (indice == -1) {
+            System.out.println("Produto não encontrado.");
+            return;
+        }
+
+        Produto p = estoque[indice];
+
+        System.out.print("Novo nome (" + p.getNome() + "): ");
+        String nome = sc.nextLine();
+        if (!nome.isEmpty()) p.setNome(nome);
+
+        System.out.print("Novo preço (" + p.getPreco() + "): ");
+        String precoStr = sc.nextLine();
+        if (!precoStr.isEmpty()) p.setPreco(Double.parseDouble(precoStr));
+
+        System.out.print("Nova quantidade (" + p.getQuantidade() + "): ");
+        String qtdStr = sc.nextLine();
+        if (!qtdStr.isEmpty()) p.setQuantidade(Integer.parseInt(qtdStr));
+
+        System.out.println("Produto atualizado!");
+    }
+
+    private static void listar() {
+        if (total == 0) {
+            System.out.println("Estoque vazio.");
+            return;
+        }
+        for (int i = 0; i < total; i++) {
+            System.out.println(estoque[i]);
+        }
+    }
+
+    private static int buscarIndice(int codigo) {
+        for (int i = 0; i < total; i++) {
+            if (estoque[i].getCodigo() == codigo) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
