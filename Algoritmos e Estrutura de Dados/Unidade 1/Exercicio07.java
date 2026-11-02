@@ -1,5 +1,5 @@
 import java.util.Scanner;
-
+// Exercício 7: Jogo da Velha Interativo
 public class Exercicio07 {
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);

@@ -1,3 +1,4 @@
+// Exercício 6: Seleção de Números Primos para Criptografia
 public class Exercicio06 {
     public static void main(String[] args) {
         System.out.println("Numeros primos entre 1 e 100:");

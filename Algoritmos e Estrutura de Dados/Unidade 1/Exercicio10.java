@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+// Exercício 10: Desafio Final - Sistema de Gerenciamento de Estoque para uma Loja
 class Produto {
     int codigo;
     String nome;

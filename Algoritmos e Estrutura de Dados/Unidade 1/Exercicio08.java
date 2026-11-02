@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
+// Exercício 8: Análise de Frequência de Pedidos no Delivery
 public class Exercicio08 {
     public static void main(String[] args) {
         Scanner entrada = new Scanner(System.in);

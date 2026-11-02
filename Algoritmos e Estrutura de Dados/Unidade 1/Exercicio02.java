@@ -1,6 +1,6 @@
 import java.util.Scanner;
+//Exercício 2: Verificador de Características de Um Produto
 public class Exercicio02 {
-    //Exercício 2: Verificador de Características de Um Produto
     public static void main(String[] args) {       
         Scanner entrada = new Scanner(System.in);
         System.out.print("Digite o código do produto: ");
