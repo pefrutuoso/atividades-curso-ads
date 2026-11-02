@@ -1,88 +1,78 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 // Exercício 9: Gerenciando um Cadastro de Clientes
 class Pessoa {
-    String nome;
-    int idade;
-    String endereco;
+    private String nome;
+    private int idade;
+    private String endereco;
 
-    Pessoa(String nome, int idade, String endereco) {
+    public Pessoa(String nome, int idade, String endereco) {
         this.nome = nome;
         this.idade = idade;
         this.endereco = endereco;
     }
+
+    public String getNome() { return nome; }
+
+    @Override
+    public String toString() {
+        return "Nome: " + nome + " | Idade: " + idade + " | Endereço: " + endereco;
+    }
 }
 
-public class Exercicio09 {
+public class Exercicio9 {
     public static void main(String[] args) {
-        Scanner entrada = new Scanner(System.in);
-        ArrayList<Pessoa> clientes = new ArrayList<>();
+        Scanner sc = new Scanner(System.in);
+        Pessoa[] clientes = new Pessoa[100];
+        int total = 0;
 
         int opcao;
-
         do {
-            System.out.println("\n=== Cadastro de clientes ===");
-            System.out.println("1 - Cadastrar");
-            System.out.println("2 - Listar");
-            System.out.println("3 - Remover");
+            System.out.println("\n=== Cadastro de Clientes ===");
+            System.out.println("1 - Cadastrar cliente");
+            System.out.println("2 - Listar clientes");
             System.out.println("0 - Sair");
-            System.out.print("Escolha: ");
+            System.out.print("Opção: ");
+            opcao = sc.nextInt();
+            sc.nextLine();
 
-            opcao = entrada.nextInt();
-            entrada.nextLine();
-
-            if (opcao == 1) {
-                System.out.print("Nome: ");
-                String nome = entrada.nextLine();
-
-                System.out.print("Idade: ");
-                int idade = entrada.nextInt();
-                entrada.nextLine();
-
-                System.out.print("Endereco: ");
-                String endereco = entrada.nextLine();
-
-                if (idade < 0) {
-                    System.out.println("A idade nao pode ser negativa.");
-                } else {
-                    Pessoa cliente = new Pessoa(nome, idade, endereco);
-                    clientes.add(cliente);
-
-                    System.out.println("Cliente cadastrado.");
-                }
-
-            } else if (opcao == 2) {
-                if (clientes.isEmpty()) {
-                    System.out.println("Nenhum cliente cadastrado.");
-                } else {
-                    for (int i = 0; i < clientes.size(); i++) {
-                        Pessoa cliente = clientes.get(i);
-
-                        System.out.println("\nCliente " + (i + 1));
-                        System.out.println("Nome: " + cliente.nome);
-                        System.out.println("Idade: " + cliente.idade);
-                        System.out.println("Endereco: " + cliente.endereco);
+            switch (opcao) {
+                case 1:
+                    if (total >= clientes.length) {
+                        System.out.println("Cadastro cheio!");
+                        break;
                     }
-                }
+                    System.out.print("Nome: ");
+                    String nome = sc.nextLine();
+                    System.out.print("Idade: ");
+                    int idade = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Endereço: ");
+                    String endereco = sc.nextLine();
 
-            } else if (opcao == 3) {
-                System.out.print("Numero do cliente que deseja remover: ");
-                int numero = entrada.nextInt();
-                entrada.nextLine();
+                    clientes[total] = new Pessoa(nome, idade, endereco);
+                    total++;
+                    System.out.println("Cliente cadastrado com sucesso!");
+                    break;
 
-                if (numero >= 1 && numero <= clientes.size()) {
-                    clientes.remove(numero - 1);
-                    System.out.println("Cliente removido.");
-                } else {
-                    System.out.println("Numero invalido.");
-                }
+                case 2:
+                    if (total == 0) {
+                        System.out.println("Nenhum cliente cadastrado.");
+                    } else {
+                        for (int i = 0; i < total; i++) {
+                            System.out.println((i + 1) + " - " + clientes[i]);
+                        }
+                    }
+                    break;
 
-            } else if (opcao != 0) {
-                System.out.println("Opcao invalida.");
+                case 0:
+                    System.out.println("Encerrando...");
+                    break;
+
+                default:
+                    System.out.println("Opção inválida!");
             }
-
         } while (opcao != 0);
 
-        entrada.close();
+        sc.close();
     }
 }
