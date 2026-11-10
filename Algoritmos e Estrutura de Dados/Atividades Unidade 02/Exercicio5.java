@@ -27,6 +27,7 @@ public class Exercicio5 {
         produtos.add("Teclado");
         produtos.add("Mouse");
         produtos.add("Monitor");
+        produtos.add("Headset");
 
         ArrayList<String> invertida = inverterComPilha(produtos);
 
