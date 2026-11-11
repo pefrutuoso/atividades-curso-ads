@@ -2,15 +2,11 @@ import java.util.ArrayList;
 
 public class Exercicio9 {
 
-    public static void dijkstra(
-            int[][] grafo,
-            int origem,
-            int destino) {
-
+    static void dijkstra(int[][] grafo, int origem, int destino) {
         int quantidade = grafo.length;
 
         long[] distancia = new long[quantidade];
-        boolean[] visitado = new boolean[quantidade];
+        boolean[] finalizado = new boolean[quantidade];
         int[] anterior = new int[quantidade];
 
         for (int i = 0; i < quantidade; i++) {
@@ -18,24 +14,27 @@ public class Exercicio9 {
             anterior[i] = -1;
         }
 
+        // A distancia da origem para ela mesma e zero.
         distancia[origem] = 0;
 
         for (int passo = 0; passo < quantidade; passo++) {
             int atual = -1;
 
+            // Escolhe o vertice pendente com menor distancia.
             for (int i = 0; i < quantidade; i++) {
-                if (!visitado[i]) {
+                if (!finalizado[i]) {
                     if (atual == -1 || distancia[i] < distancia[atual]) {
                         atual = i;
                     }
                 }
             }
 
+            // Nao existem mais vertices alcancaveis para explorar.
             if (atual == -1 || distancia[atual] == Long.MAX_VALUE) {
                 break;
             }
 
-            visitado[atual] = true;
+            finalizado[atual] = true;
 
             if (atual == destino) {
                 break;
@@ -44,9 +43,11 @@ public class Exercicio9 {
             for (int vizinho = 0; vizinho < quantidade; vizinho++) {
                 int peso = grafo[atual][vizinho];
 
-                if (peso >= 0 && !visitado[vizinho]) {
+                // Peso -1 significa que a conexao nao existe.
+                if (peso >= 0 && !finalizado[vizinho]) {
                     long novaDistancia = distancia[atual] + peso;
 
+                    // Atualiza quando encontra uma rota menor.
                     if (novaDistancia < distancia[vizinho]) {
                         distancia[vizinho] = novaDistancia;
                         anterior[vizinho] = atual;
@@ -61,24 +62,16 @@ public class Exercicio9 {
         }
 
         ArrayList<Integer> caminho = new ArrayList<>();
+
+        // Reconstrucao do destino ate a origem.
         int atual = destino;
 
         while (atual != -1) {
-            caminho.add(atual);
+            caminho.add(0, atual);
             atual = anterior[atual];
         }
 
-        System.out.print("Menor caminho: ");
-
-        for (int i = caminho.size() - 1; i >= 0; i--) {
-            System.out.print(caminho.get(i));
-
-            if (i > 0) {
-                System.out.print(" -> ");
-            }
-        }
-
-        System.out.println();
+        System.out.println("Menor caminho: " + caminho);
         System.out.println("Distancia total: " + distancia[destino]);
     }
 

@@ -1,44 +1,53 @@
 public class Exercicio8 {
 
     static class No {
-        int valor;
+        String produto;
+        int precoCentavos;
+
         No esquerdo;
         No direito;
 
-        No(int valor) {
-            this.valor = valor;
+        No(String produto, int precoCentavos) {
+            this.produto = produto;
+            this.precoCentavos = precoCentavos;
         }
     }
 
-    public static Integer encontrarMenor(No raiz) {
+    static No encontrarMenor(No raiz) {
         if (raiz == null) {
             return null;
         }
 
         No atual = raiz;
 
+        // Em uma BST, os menores valores ficam a esquerda.
         while (atual.esquerdo != null) {
             atual = atual.esquerdo;
         }
 
-        return atual.valor;
+        return atual;
     }
 
     public static void main(String[] args) {
-        No raiz = new No(100);
+        // Os precos devem respeitar a organizacao da BST.
+        No raiz = new No("Teclado", 15000);
+        raiz.esquerdo = new No("Mouse", 8000);
+        raiz.direito = new No("Monitor", 90000);
+        raiz.esquerdo.esquerdo = new No("Mousepad", 2500);
 
-        raiz.esquerdo = new No(70);
-        raiz.direito = new No(150);
-
-        raiz.esquerdo.esquerdo = new No(40);
-        raiz.esquerdo.direito = new No(90);
-
-        Integer menor = encontrarMenor(raiz);
+        No menor = encontrarMenor(raiz);
 
         if (menor == null) {
             System.out.println("A arvore esta vazia.");
         } else {
-            System.out.println("Menor valor: " + menor);
+            System.out.println("Produto mais barato: " + menor.produto);
+
+            // Separa reais e centavos apenas para exibir.
+            System.out.printf(
+                "Preco: R$ %d,%02d%n",
+                menor.precoCentavos / 100,
+                menor.precoCentavos % 100
+            );
         }
     }
 }

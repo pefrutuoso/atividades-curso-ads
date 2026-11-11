@@ -4,13 +4,13 @@ import java.util.Queue;
 
 public class Exercicio10 {
 
-    public static void ordenarTopologicamente(
-            int[][] grafo,
-            String[] tarefas) {
+    static void ordenarTopologicamente(
+            int[][] grafo, String[] tarefas) {
 
         int quantidade = grafo.length;
         int[] grauEntrada = new int[quantidade];
 
+        // Conta quantas arestas chegam a cada vertice.
         for (int origem = 0; origem < quantidade; origem++) {
             for (int destino = 0; destino < quantidade; destino++) {
                 if (grafo[origem][destino] == 1) {
@@ -21,6 +21,7 @@ public class Exercicio10 {
 
         Queue<Integer> fila = new ArrayDeque<>();
 
+        // Vertices sem dependencias podem ser processados primeiro.
         for (int i = 0; i < quantidade; i++) {
             if (grauEntrada[i] == 0) {
                 fila.offer(i);
@@ -35,6 +36,7 @@ public class Exercicio10 {
 
             for (int vizinho = 0; vizinho < quantidade; vizinho++) {
                 if (grafo[atual][vizinho] == 1) {
+                    // A tarefa atual deixou de ser uma pendencia.
                     grauEntrada[vizinho]--;
 
                     if (grauEntrada[vizinho] == 0) {
@@ -44,9 +46,10 @@ public class Exercicio10 {
             }
         }
 
+        // Um ciclo impede que todos os vertices sejam liberados.
         if (ordem.size() != quantidade) {
             System.out.println(
-                "O grafo possui ciclo. Nao existe ordenacao topologica."
+                "Nao e possivel ordenar: o grafo possui ciclo."
             );
             return;
         }
@@ -54,28 +57,29 @@ public class Exercicio10 {
         System.out.println("Ordem das tarefas:");
 
         for (int i = 0; i < ordem.size(); i++) {
-            int tarefa = ordem.get(i);
+            int vertice = ordem.get(i);
 
-            System.out.println((i + 1) + " - " + tarefas[tarefa]);
+            System.out.println((i + 1) + " - " + tarefas[vertice]);
         }
     }
 
     public static void main(String[] args) {
         String[] tarefas = {
             "Planejar",
-            "Comprar materiais",
-            "Preparar ambiente",
-            "Executar projeto",
-            "Entregar projeto"
+            "Programar",
+            "Testar",
+            "Documentar",
+            "Publicar"
         };
 
-        int[][] grafo = new int[5][5];
-
-        grafo[0][1] = 1;
-        grafo[0][2] = 1;
-        grafo[1][3] = 1;
-        grafo[2][3] = 1;
-        grafo[3][4] = 1;
+        // Matriz direcionada: nao adicionamos automaticamente a volta.
+        int[][] grafo = {
+            {0, 1, 0, 1, 0},
+            {0, 0, 1, 0, 0},
+            {0, 0, 0, 0, 1},
+            {0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0}
+        };
 
         ordenarTopologicamente(grafo, tarefas);
     }

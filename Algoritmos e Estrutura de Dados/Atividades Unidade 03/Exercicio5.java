@@ -3,12 +3,15 @@ public class Exercicio5 {
     static class Grafo {
         int[][] matriz;
 
-        Grafo(int quantidadeVertices) {
-            matriz = new int[quantidadeVertices][quantidadeVertices];
+        Grafo(int quantidade) {
+            matriz = new int[quantidade][quantidade];
         }
 
         void adicionarAresta(int origem, int destino) {
+            // Conexao de ida.
             matriz[origem][destino] = 1;
+
+            // Conexao de volta: grafo nao direcionado.
             matriz[destino][origem] = 1;
         }
 

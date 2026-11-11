@@ -4,18 +4,19 @@ import java.util.Queue;
 
 public class Exercicio6 {
 
-    public static void bfs(int[][] grafo, int origem, int destino) {
+    static void buscarCaminho(int[][] grafo, int origem, int destino) {
         boolean[] visitado = new boolean[grafo.length];
         int[] anterior = new int[grafo.length];
 
+        // -1 indica que ainda nao existe antecessor registrado.
         for (int i = 0; i < anterior.length; i++) {
             anterior[i] = -1;
         }
 
         Queue<Integer> fila = new ArrayDeque<>();
 
-        visitado[origem] = true;
         fila.offer(origem);
+        visitado[origem] = true;
 
         while (!fila.isEmpty()) {
             int atual = fila.poll();
@@ -24,11 +25,11 @@ public class Exercicio6 {
                 break;
             }
 
+            // Examina todos os possiveis vizinhos.
             for (int vizinho = 0; vizinho < grafo.length; vizinho++) {
                 if (grafo[atual][vizinho] == 1 && !visitado[vizinho]) {
                     visitado[vizinho] = true;
                     anterior[vizinho] = atual;
-
                     fila.offer(vizinho);
                 }
             }
@@ -40,24 +41,16 @@ public class Exercicio6 {
         }
 
         ArrayList<Integer> caminho = new ArrayList<>();
+
+        // Volta do destino ate a origem pelos antecessores.
         int atual = destino;
 
         while (atual != -1) {
-            caminho.add(atual);
+            caminho.add(0, atual);
             atual = anterior[atual];
         }
 
-        System.out.print("Caminho mais curto: ");
-
-        for (int i = caminho.size() - 1; i >= 0; i--) {
-            System.out.print(caminho.get(i));
-
-            if (i > 0) {
-                System.out.print(" -> ");
-            }
-        }
-
-        System.out.println();
+        System.out.println("Caminho mais curto: " + caminho);
         System.out.println("Quantidade de arestas: " + (caminho.size() - 1));
     }
 
@@ -70,6 +63,6 @@ public class Exercicio6 {
             {0, 0, 1, 1, 0}
         };
 
-        bfs(grafo, 0, 4);
+        buscarCaminho(grafo, 0, 4);
     }
 }

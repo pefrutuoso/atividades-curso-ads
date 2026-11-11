@@ -1,5 +1,6 @@
 public class Exercicio1 {
 
+    // Cada objeto No representa um livro na arvore.
     static class No {
         int codigo;
         String titulo;
@@ -15,14 +16,18 @@ public class Exercicio1 {
         }
     }
 
-    static class Arvore {
+    static class ArvoreLivros {
         No raiz;
 
+        // Insere um livro e atualiza a raiz, se necessario.
         void inserir(int codigo, String titulo, String autor) {
             raiz = inserirNo(raiz, codigo, titulo, autor);
         }
 
-        No inserirNo(No atual, int codigo, String titulo, String autor) {
+        No inserirNo(
+                No atual, int codigo, String titulo, String autor) {
+
+            // Uma posicao vazia pode receber o novo livro.
             if (atual == null) {
                 return new No(codigo, titulo, autor);
             }
@@ -31,13 +36,12 @@ public class Exercicio1 {
                 atual.esquerdo = inserirNo(
                     atual.esquerdo, codigo, titulo, autor
                 );
-
             } else if (codigo > atual.codigo) {
                 atual.direito = inserirNo(
                     atual.direito, codigo, titulo, autor
                 );
-
             } else {
+                // Esta versao nao permite codigos repetidos.
                 System.out.println("Codigo ja cadastrado: " + codigo);
             }
 
@@ -50,6 +54,7 @@ public class Exercicio1 {
             );
         }
 
+        // Pre-ordem: raiz, esquerda, direita.
         void preOrdem(No no) {
             if (no != null) {
                 exibirLivro(no);
@@ -58,6 +63,7 @@ public class Exercicio1 {
             }
         }
 
+        // Em ordem: esquerda, raiz, direita.
         void emOrdem(No no) {
             if (no != null) {
                 emOrdem(no.esquerdo);
@@ -66,6 +72,7 @@ public class Exercicio1 {
             }
         }
 
+        // Pos-ordem: esquerda, direita, raiz.
         void posOrdem(No no) {
             if (no != null) {
                 posOrdem(no.esquerdo);
@@ -76,19 +83,19 @@ public class Exercicio1 {
     }
 
     public static void main(String[] args) {
-        Arvore biblioteca = new Arvore();
+        ArvoreLivros arvore = new ArvoreLivros();
 
-        biblioteca.inserir(20, "Dom Casmurro", "Machado de Assis");
-        biblioteca.inserir(10, "O Cortico", "Aluisio Azevedo");
-        biblioteca.inserir(30, "Iracema", "Jose de Alencar");
+        arvore.inserir(20, "Java Basico", "Ana");
+        arvore.inserir(10, "Logica de Programacao", "Carlos");
+        arvore.inserir(30, "Estrutura de Dados", "Mariana");
 
         System.out.println("=== Pre-ordem ===");
-        biblioteca.preOrdem(biblioteca.raiz);
+        arvore.preOrdem(arvore.raiz);
 
         System.out.println("\n=== Em ordem ===");
-        biblioteca.emOrdem(biblioteca.raiz);
+        arvore.emOrdem(arvore.raiz);
 
         System.out.println("\n=== Pos-ordem ===");
-        biblioteca.posOrdem(biblioteca.raiz);
+        arvore.posOrdem(arvore.raiz);
     }
 }
